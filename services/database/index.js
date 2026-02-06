@@ -1,11 +1,9 @@
-import { createClient } from '@supabase/supabase-js';
-import dotenv from 'dotenv';
+import { createClient } from "@supabase/supabase-js";
+import dotenv from "dotenv";
+import { dbUrl, serviceKey } from "@/utils/env";
 
 dotenv.config();
 
-const database = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_SUPABASE_SERVICE_ROLE_KEY
-);
+const database = createClient(dbUrl, serviceKey);
 
 export default database;
