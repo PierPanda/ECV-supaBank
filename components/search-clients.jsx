@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Input } from "@/components/ui/input";
 
 export default function SearchClients() {
   const router = useRouter();
@@ -23,12 +22,12 @@ export default function SearchClients() {
   };
 
   return (
-    <Input
+    <input
       type="text"
-      placeholder="Rechercher un client..."
+      placeholder=" Rechercher un client par nom ou prénom..."
       value={search}
       onChange={(e) => handleSearch(e.target.value)}
-      className="max-w-md"
+      className="w-full bg-white px-6 py-4 text-lg rounded-2xl border-0 shadow-lg focus:outline-none focus:ring-4 focus:ring-white/30 placeholder:text-slate-400"
     />
   );
 }
