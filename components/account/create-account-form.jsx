@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { sileo } from "sileo";
 import { Input } from "@/components/ui/input";
 import { createAccount } from "@/services/accounts/create-account";
 
@@ -17,11 +18,19 @@ export function CreateAccountForm({ clientId, onClose }) {
     const result = await createAccount(formData);
 
     if (result.error) {
+      sileo.error({
+        title: "❌ Échec de la création",
+        description: result.error,
+      });
       setError(result.error);
       setIsLoading(false);
       return;
     }
 
+    sileo.success({
+      title: "✅ Compte créé",
+      description: "Le compte a été créé avec succès",
+    });
     setIsLoading(false);
     onClose?.();
   }

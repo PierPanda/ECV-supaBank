@@ -1,32 +1,52 @@
 "use client";
 
 import { useState } from "react";
+import { sileo } from "sileo";
 import { Input } from "@/components/ui/input";
 import { createTransferTransaction } from "@/services/transactions/create-transfer-transaction";
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 export function TransferForm({ sourceAccountId, clientAccounts, onClose }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedSourceId, setSelectedSourceId] = useState(
-    sourceAccountId || clientAccounts[0]?.id
+    sourceAccountId || clientAccounts[0]?.id,
   );
 
   const otherAccounts = clientAccounts.filter(
-    (account) => account.id !== selectedSourceId
+    (account) => account.id !== selectedSourceId,
   );
 
   async function handleSubmit(formData) {
     setIsLoading(true);
     setError(null);
 
+    sileo.info({
+      title: "⏳ Transfert en cours...",
+      description: "Veuillez patienter (5 secondes)",
+      position: "bottom-center",
+    });
+
+    await delay(5000);
     const result = await createTransferTransaction(formData);
 
     if (result.error) {
+      sileo.error({
+        title: "❌ Échec du transfert",
+        description: result.error,
+      });
       setError(result.error);
       setIsLoading(false);
       return;
     }
 
+    sileo.success({
+      title: "✅ Transfert réussi",
+      description: "Le transfert a été effectué avec succès",
+    });
     setIsLoading(false);
     onClose?.();
   }
