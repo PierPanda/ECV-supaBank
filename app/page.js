@@ -14,11 +14,9 @@ async function getClients(search) {
   const { data, error } = await query;
 
   if (error) {
-    console.error("Supabase error:", error);
     throw new Error("Erreur lors de la récupération des clients");
   }
 
-  console.log("Clients found:", data);
   return data;
 }
 

@@ -2,11 +2,14 @@ import React from "react";
 import Link from "next/link";
 import { getClient } from "@/services/client/get-client";
 import { getAccount } from "@/services/accounts/get-account";
+import { getAccountTransactions } from "@/services/transactions/get-account-transactions";
+import { TransactionList } from "@/components/transaction/transaction-list";
 
 export default async function AccountPage({ params }) {
   const { id } = await params;
   const account = await getAccount(id);
   const client = await getClient(account.client_id);
+  const transactions = await getAccountTransactions(id);
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("fr-FR", {
@@ -27,7 +30,6 @@ export default async function AccountPage({ params }) {
   return (
     <main className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 py-12 px-4">
       <div className="max-w-2xl mx-auto">
-        {/* Breadcrumb */}
         <nav className="mb-6">
           <Link
             href={`/clients/${client.id}`}
@@ -96,6 +98,13 @@ export default async function AccountPage({ params }) {
               {formatCurrency(account.balance)}
             </p>
           </div>
+        </div>
+
+        <div className="mt-8">
+          <h2 className="text-xl font-bold text-slate-900 mb-4">
+            Transactions ({transactions.length})
+          </h2>
+          <TransactionList transactions={transactions} currentAccountId={id} />
         </div>
       </div>
     </main>

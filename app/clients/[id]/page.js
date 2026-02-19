@@ -3,8 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getClient } from "@/services/client/get-client";
 import { getClientAccounts } from "@/services/accounts/get-client-accounts";
-import { AccountCard } from "@/components/account-card";
-import { CreateAccountButton } from "@/components/create-account-button";
+import { AccountCard } from "@/components/account/account-card";
+import { CreateAccountButton } from "@/components/account/create-account-button";
+import { TransferButton } from "@/components/transaction/transfer-button";
 
 export default async function ClientPage({ params }) {
   const { id } = await params;
@@ -79,7 +80,10 @@ export default async function ClientPage({ params }) {
                 ({clientAccounts?.length || 0})
               </span>
             </h2>
-            <CreateAccountButton clientId={id} />
+            <div className="flex gap-3">
+              <TransferButton clientAccounts={clientAccounts} />
+              <CreateAccountButton clientId={id} />
+            </div>
           </div>
 
           {clientAccounts?.length > 0 ? (
