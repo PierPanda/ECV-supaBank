@@ -30,6 +30,7 @@ export function CreateAccountForm({ clientId, onClose }) {
     sileo.success({
       title: "Compte créé",
       description: "Le compte a été créé avec succès",
+      duration: 3000,
     });
     setIsLoading(false);
     onClose?.();

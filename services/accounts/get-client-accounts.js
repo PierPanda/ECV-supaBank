@@ -7,7 +7,6 @@ export async function getClientAccounts(clientId) {
 
   if (!clientAccountRes.ok) {
     const error = await clientAccountRes.json().catch(() => ({}));
-    console.error("getClientAccounts error:", error);
     return [];
   }
 

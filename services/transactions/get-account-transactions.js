@@ -5,7 +5,6 @@ export async function getAccountTransactions(accountId) {
 
   if (!res.ok) {
     const error = await res.json().catch(() => ({}));
-    console.error("getAccountTransactions error:", error);
     return [];
   }
 

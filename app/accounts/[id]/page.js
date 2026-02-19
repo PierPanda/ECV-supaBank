@@ -4,6 +4,7 @@ import { getClient } from "@/services/client/get-client";
 import { getAccount } from "@/services/accounts/get-account";
 import { getAccountTransactions } from "@/services/transactions/get-account-transactions";
 import { TransactionList } from "@/components/transaction/transaction-list";
+import { DeleteAccountButton } from "@/components/account/delete-account-button";
 
 export default async function AccountPage({ params }) {
   const { id } = await params;
@@ -16,15 +17,6 @@ export default async function AccountPage({ params }) {
       style: "currency",
       currency: "EUR",
     }).format(amount);
-  };
-
-  const getAccountTypeStyle = (type) => {
-    const styles = {
-      checking: "bg-blue-100 text-blue-800",
-      savings: "bg-green-100 text-green-800",
-      investment: "bg-purple-100 text-purple-800",
-    };
-    return styles[type] || "bg-gray-100 text-gray-800";
   };
 
   return (
@@ -90,13 +82,20 @@ export default async function AccountPage({ params }) {
             </div>
           </div>
 
-          <div className="px-8 py-8">
-            <p className="text-slate-500 text-sm font-medium uppercase tracking-wide">
-              Solde actuel
-            </p>
-            <p className="text-4xl font-bold text-slate-900 mt-2">
-              {formatCurrency(account.balance)}
-            </p>
+          <div className="px-8 py-8 flex items-end justify-between">
+            <div>
+              <p className="text-slate-500 text-sm font-medium uppercase tracking-wide">
+                Solde actuel
+              </p>
+              <p className="text-4xl font-bold text-slate-900 mt-2">
+                {formatCurrency(account.balance)}
+              </p>
+            </div>
+            <DeleteAccountButton
+              accountId={id}
+              clientId={client.id}
+              balance={account.balance}
+            />
           </div>
         </div>
 

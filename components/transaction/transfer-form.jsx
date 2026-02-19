@@ -5,10 +5,6 @@ import { sileo } from "sileo";
 import { Input } from "@/components/ui/input";
 import { createTransferTransaction } from "@/services/transactions/create-transfer-transaction";
 
-function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 export function TransferForm({ sourceAccountId, clientAccounts, onClose }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -16,15 +12,46 @@ export function TransferForm({ sourceAccountId, clientAccounts, onClose }) {
     sourceAccountId || clientAccounts[0]?.id,
   );
 
+  const sourceAccount = clientAccounts.find(
+    (account) => account.id === selectedSourceId,
+  );
+  const sourceBalance = Number(sourceAccount?.balance) || 0;
+
   const otherAccounts = clientAccounts.filter(
     (account) => account.id !== selectedSourceId,
   );
 
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("fr-FR", {
+      style: "currency",
+      currency: "EUR",
+    }).format(amount);
+  };
+
   async function handleSubmit(formData) {
+    const amount = Number(formData.get("amount"));
+
+    if (amount > sourceBalance) {
+      sileo.error({
+        title: "Solde insuffisant",
+        description: `Le montant dépasse le solde disponible (${formatCurrency(sourceBalance)})`,
+      });
+      setError("Solde insuffisant");
+      return;
+    }
+
+    if (sourceBalance <= 0) {
+      sileo.error({
+        title: "Transfert impossible",
+        description: "Le compte source n'a pas de fonds disponibles",
+      });
+      setError("Le compte source est vide");
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
 
-    await delay(5000);
     const result = await createTransferTransaction(formData);
 
     if (result.error) {
@@ -40,6 +67,7 @@ export function TransferForm({ sourceAccountId, clientAccounts, onClose }) {
     sileo.success({
       title: "Transfert réussi",
       description: "Le transfert a été effectué avec succès",
+      duration: 3000,
     });
     setIsLoading(false);
     onClose?.();
@@ -86,6 +114,11 @@ export function TransferForm({ sourceAccountId, clientAccounts, onClose }) {
             </option>
           ))}
         </select>
+        <p
+          className={`text-sm mt-1 ${sourceBalance <= 0 ? "text-red-500" : "text-slate-500"}`}
+        >
+          Solde disponible : {formatCurrency(sourceBalance)}
+        </p>
       </div>
 
       <div>
@@ -122,10 +155,11 @@ export function TransferForm({ sourceAccountId, clientAccounts, onClose }) {
           name="amount"
           type="number"
           min="0.01"
+          max={sourceBalance}
           step="0.01"
           placeholder="0.00"
           required
-          disabled={isLoading}
+          disabled={isLoading || sourceBalance <= 0}
         />
       </div>
 
@@ -160,7 +194,7 @@ export function TransferForm({ sourceAccountId, clientAccounts, onClose }) {
         </button>
         <button
           type="submit"
-          disabled={isLoading}
+          disabled={isLoading || sourceBalance <= 0}
           className="flex-1 px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-colors disabled:opacity-50"
         >
           {isLoading ? "Transfert..." : "Transférer"}

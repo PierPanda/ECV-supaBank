@@ -9,15 +9,6 @@ export function AccountCard({ account }) {
     }).format(amount);
   };
 
-  const getAccountTypeStyle = (type) => {
-    const styles = {
-      checking: "bg-blue-100 text-blue-800",
-      savings: "bg-green-100 text-green-800",
-      investment: "bg-purple-100 text-purple-800",
-    };
-    return styles[type] || "bg-gray-100 text-gray-800";
-  };
-
   return (
     <Link href={`/accounts/${account.id}`} className="block group">
       <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-slate-100">

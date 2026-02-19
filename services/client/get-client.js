@@ -5,7 +5,6 @@ export async function getClient(id) {
 
   if (!clientRes.ok) {
     const error = await clientRes.json().catch(() => ({}));
-    console.error("getClient error:", error);
     return null;
   }
 

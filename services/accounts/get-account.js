@@ -6,7 +6,6 @@ export async function getAccount(accountId) {
     const account = await response.json();
     return account;
   } catch (e) {
-    console.error(e.message);
     throw new Error("Account not found");
   }
 }
