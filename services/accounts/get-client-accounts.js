@@ -1,14 +1,15 @@
 import { nextUrl } from "@/utils/env";
 
 export async function getClientAccounts(clientId) {
-  try {
-    const clientAccountRes = await fetch(
-      `${nextUrl}/api/accounts?clientId=${clientId}`,
-    );
-    const result = await clientAccountRes.json();
-    return result;
-  } catch (e) {
-    console.log(e.message);
+  const clientAccountRes = await fetch(
+    `${nextUrl}/api/accounts?clientId=${clientId}`,
+  );
+
+  if (!clientAccountRes.ok) {
+    const error = await clientAccountRes.json().catch(() => ({}));
+    console.error("getClientAccounts error:", error);
     return [];
   }
+
+  return clientAccountRes.json();
 }

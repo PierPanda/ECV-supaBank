@@ -1,11 +1,13 @@
 import { nextUrl } from "../../utils/env";
 
 export async function getClient(id) {
-  try {
-    const clientRes = await fetch(`${nextUrl}/api/clients/${id}`);
-    const result = await clientRes.json();
-    return result;
-  } catch {
-    throw Error("Client not found");
+  const clientRes = await fetch(`${nextUrl}/api/clients/${id}`);
+
+  if (!clientRes.ok) {
+    const error = await clientRes.json().catch(() => ({}));
+    console.error("getClient error:", error);
+    return null;
   }
+
+  return clientRes.json();
 }
