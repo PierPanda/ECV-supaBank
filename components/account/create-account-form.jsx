@@ -19,7 +19,7 @@ export function CreateAccountForm({ clientId, onClose }) {
 
     if (result.error) {
       sileo.error({
-        title: "❌ Échec de la création",
+        title: "Échec de la création",
         description: result.error,
       });
       setError(result.error);
@@ -28,7 +28,7 @@ export function CreateAccountForm({ clientId, onClose }) {
     }
 
     sileo.success({
-      title: "✅ Compte créé",
+      title: "Compte créé",
       description: "Le compte a été créé avec succès",
     });
     setIsLoading(false);

@@ -24,18 +24,12 @@ export function TransferForm({ sourceAccountId, clientAccounts, onClose }) {
     setIsLoading(true);
     setError(null);
 
-    sileo.info({
-      title: "⏳ Transfert en cours...",
-      description: "Veuillez patienter (5 secondes)",
-      position: "bottom-center",
-    });
-
     await delay(5000);
     const result = await createTransferTransaction(formData);
 
     if (result.error) {
       sileo.error({
-        title: "❌ Échec du transfert",
+        title: "Échec du transfert",
         description: result.error,
       });
       setError(result.error);
@@ -44,7 +38,7 @@ export function TransferForm({ sourceAccountId, clientAccounts, onClose }) {
     }
 
     sileo.success({
-      title: "✅ Transfert réussi",
+      title: "Transfert réussi",
       description: "Le transfert a été effectué avec succès",
     });
     setIsLoading(false);
