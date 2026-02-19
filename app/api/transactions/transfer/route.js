@@ -58,8 +58,6 @@ export async function POST(request) {
     .update({ balance: Number(account.balance) + Number(amount) })
     .eq('id', account_id);
 
-    console.log(account.balance, amount, Number(account.balance) + Number(amount), typeof account.balance, typeof amount, typeof (Number(account.balance) + Number(amount)));
-
   await database
     .from('accounts')
     .update({ balance: Number(sourceAccount.balance) - Number(amount) })
