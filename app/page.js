@@ -1,6 +1,6 @@
 import Link from "next/link";
 import database from "@/services/database";
-import SearchClients from "@/components/search-clients";
+import SearchClients from "@/components/ui/search-clients";
 
 async function getClients(search) {
   let query = database.from("clients").select();
