@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getClient } from "@/services/client/get-client";
 import { getClientAccounts } from "@/services/accounts/get-client-accounts";
 import { AccountCard } from "@/components/account-card";
+import { CreateAccountButton } from "@/components/create-account-button";
 
 export default async function ClientPage({ params }) {
   const { id } = await params;
@@ -78,9 +79,7 @@ export default async function ClientPage({ params }) {
                 ({clientAccounts?.length || 0})
               </span>
             </h2>
-            <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-xl transition-colors text-sm">
-              + Nouveau compte
-            </button>
+            <CreateAccountButton clientId={id} />
           </div>
 
           {clientAccounts?.length > 0 ? (

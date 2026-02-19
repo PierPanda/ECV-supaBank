@@ -14,9 +14,11 @@ async function getClients(search) {
   const { data, error } = await query;
 
   if (error) {
+    console.error("Supabase error:", error);
     throw new Error("Erreur lors de la récupération des clients");
   }
 
+  console.log("Clients found:", data);
   return data;
 }
 
@@ -54,7 +56,6 @@ export default async function Home({ searchParams }) {
           </div>
         ) : clients.length === 0 ? (
           <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
-            <p className="text-6xl mb-4">😕</p>
             <h2 className="text-xl font-semibold text-slate-900 mb-2">
               Aucun résultat
             </h2>
