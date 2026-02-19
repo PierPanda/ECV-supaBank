@@ -30,7 +30,7 @@ export default async function Home({ searchParams }) {
       <header className="bg-linear-to-r from-indigo-600 to-purple-600 py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            SupaBank
+            SupaBank Admin Panel
           </h1>
           <p className="text-indigo-200 text-lg mb-8">
             Gérez vos clients et leurs comptes en toute simplicité
